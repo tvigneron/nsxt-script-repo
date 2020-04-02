@@ -42,4 +42,4 @@ if __name__ == "__main__":
 
     for id in tier1s_id:
         print(f"We are pinging the interfaces of tier1 {id}, those interfaces have the following IPs {tier1s_downlink_ips[id]}")
-        print(ping_ips(tier1s_downlink_ips[id],"-c 2 ")) #This option works for Linux or Mac
+        print(ping_ips(tier1s_downlink_ips[id],"-c 2 ")) #This option works for Linux or Mac, you can remove it for windows or put windows specific options
