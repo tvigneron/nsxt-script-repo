@@ -7,7 +7,7 @@ from os import system, name
 import json
 
 #variables:
-nsx-hostname = "" #hostname of the NSX-T Manager
+hostname = "" #hostname of the NSX-T Manager
 username = "" #username which should be admin or auditor. Does not support Remote header
 password = ""
 
@@ -37,8 +37,8 @@ def ping_ips(list_ips, ping_options = ""):
 
 if __name__ == "__main__":
     "This script pings a list of IPs it gets from Tier-1 downlink interface. It assumes the VM has connectivity to those IPs and this IPs are not used somewhere else."
-    tier1s_id = get_tier1s_id(nsx-hostname, username, password)
-    tier1s_downlink_ips = get_tier1s_downlink_ips(nsx-hostname, username, password, tier1s_id)
+    tier1s_id = get_tier1s_id(hostname, username, password)
+    tier1s_downlink_ips = get_tier1s_downlink_ips(hostname, username, password, tier1s_id)
 
     for id in tier1s_id:
         print(f"We are pinging the interfaces of tier1 {id}, those interfaces have the following IPs {tier1s_downlink_ips[id]}")
