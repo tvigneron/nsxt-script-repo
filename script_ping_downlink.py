@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # Script to get the IP of Tier-1 downlinks and ping them.
-# This script is neither supported nor endorsed by VMWare.
+# This script is neither supported nor endorsed by VMware but meant as an example of python.
 
 from requests import get
 from requests.auth import HTTPBasicAuth
-from os import system, name
+from os import system
 import json
 
 #variables:
