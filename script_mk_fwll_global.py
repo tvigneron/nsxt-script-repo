@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-#written in python 3
+#!/usr/bin/env python
 # Script to move GM objects under a specific location to the default one.
 # This script is neither supported nor endorsed by VMware but meant as an example of python.
 
@@ -12,7 +11,7 @@ from ast import literal_eval
 disable_warnings()
 
 #put your Global Manager IP or FQDN
-hostname = "1.1.1.1"
+hostname = "10.114.218.181"
 
 #put your username
 username = "admin"
@@ -34,33 +33,14 @@ class NsxMgr:
         self.password = str(password)
         self.certificate_validation = certificate_validation
         self.mgr_type = mgr_type
-
-    def path(self):
-        """Method to define which path applies between GM and LM"""
-        if self.mgr_type == "local":
-            path = "policy/api/v1/infra"
-        elif self.mgr_type == "global":
-            path = "global-manager/api/v1/global-infra"
-        return path
-
-    def tree(self):
-        """Method to define which tree applies between GM and LM"""
-        if self.mgr_type == "local":
-            tree = "/infra"
-        elif self.mgr_type == "global":
-            tree = "/global-infra"
-        return tree
-
-    def uri_infra(self):
-        """Method to get the endpoing URI """
-        path = self.path()
-        uri = f"https://{self.hostname}/{path}"
-        return uri
+        self.tree = "/global-infra"
+        self.path = "global-manager/api/v1/global-infra"
+        self.url = f"https://{self.hostname}/{self.path}"
 
     def get_conf(self, resource_types = ["Domain","SecurityPolicy","Group","Rule"]):
         """Method to get NSX-T logical configuration leveraging Policy Filters"""
         filter = "?filter=Type-" + "|".join(resource_types)
-        uri = self.uri_infra() + filter
+        uri = self.url + filter
         res = get(  uri,
                     verify = self.certificate_validation,
                     auth = HTTPBasicAuth(self.username, self.password)
@@ -69,7 +49,7 @@ class NsxMgr:
 
     def patch_conf(self, body):
         """Method to do patch against NSX-T manager"""
-        uri = self.uri_infra()
+        uri = self.url
         #print(uri)
         headers = {"content-type": "application/json"}
         res = patch(uri,
@@ -79,7 +59,6 @@ class NsxMgr:
                     auth = HTTPBasicAuth(self.username, self.password)
                     )
         return {"status_code" : res.status_code, "response_text" : res.text}
-
 
     def identify_changes(self, domains, resource_types = ["Domain","SecurityPolicy","Group","Rule"]):
         """Creates dictionaries per domain with rules to add and delete in
@@ -110,7 +89,7 @@ class NsxMgr:
                                 default_domain_object = deepcopy(domain_child[resource_type])
                                 domain_object = deepcopy(domain_child[resource_type])
                                 for domain_to_migrate in domains:
-                                    default_domain_object = str(default_domain_object).replace(self.tree()  + '/domains/' + domain_to_migrate, self.tree()  + '/domains/default')
+                                    default_domain_object = str(default_domain_object).replace(self.tree  + '/domains/' + domain_to_migrate, self.tree  + '/domains/default')
                                 default_domain_object = literal_eval(default_domain_object)
 
                                 change_dict["default"].append({resource_type:default_domain_object, "resource_type" : "Child" + resource_type})
@@ -157,4 +136,4 @@ if __name__ == "__main__":
     file_new.write(conf)
 
     #Push the new configuration on the Global Manager. This will delete your old objects.
-    gm.patch_conf(conf)
+    #gm.patch_conf(conf)
