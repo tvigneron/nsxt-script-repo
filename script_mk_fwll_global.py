@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Requires Python 3.6 or above
 # Script to move GM objects under a specific location to the default one.
 # This script is neither supported nor endorsed by VMware but meant as an example of python.
 
