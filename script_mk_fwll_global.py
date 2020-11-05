@@ -3,6 +3,7 @@
 # Script to move GM objects under a specific location to the default one.
 # This script is neither supported nor endorsed by VMware but meant as an example of python.
 
+import warnings
 from json import loads, dumps
 from requests import get, patch
 from requests.packages.urllib3 import disable_warnings
@@ -27,6 +28,8 @@ domains = ["LM-Paris","LM-London"]
 resource_types =["Domain","SecurityPolicy","Group","Rule"]
 
 
+warnings.filterwarnings("ignore")
+
 class NsxMgr:
     def __init__(self, hostname, username, password, mgr_type = "global", certificate_validation = False):
         self.hostname = str(hostname)
@@ -36,7 +39,7 @@ class NsxMgr:
         self.mgr_type = mgr_type
         self.tree = "/global-infra"
         self.path = "/global-manager/api/v1/global-infra"
-        self.url = f"https://{self.hostname}{self.path}"
+        self.url = "https://" + self.hostname + self.path
 
     def get_conf(self, resource_types = ["Domain","SecurityPolicy","Group","Rule"]):
         """Method to get NSX-T logical configuration leveraging Policy Filters"""
