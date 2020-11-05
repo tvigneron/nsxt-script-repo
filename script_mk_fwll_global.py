@@ -34,8 +34,8 @@ class NsxMgr:
         self.certificate_validation = certificate_validation
         self.mgr_type = mgr_type
         self.tree = "/global-infra"
-        self.path = "global-manager/api/v1/global-infra"
-        self.url = f"https://{self.hostname}/{self.path}"
+        self.path = "/global-manager/api/v1/global-infra"
+        self.url = f"https://{self.hostname}{self.path}"
 
     def get_conf(self, resource_types = ["Domain","SecurityPolicy","Group","Rule"]):
         """Method to get NSX-T logical configuration leveraging Policy Filters"""
