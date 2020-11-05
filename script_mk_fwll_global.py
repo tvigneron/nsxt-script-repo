@@ -136,4 +136,4 @@ if __name__ == "__main__":
     file_new.write(conf)
 
     #Push the new configuration on the Global Manager. This will delete your old objects.
-    #gm.patch_conf(conf)
+    gm.patch_conf(conf)
