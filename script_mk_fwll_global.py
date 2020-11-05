@@ -11,6 +11,7 @@ from requests.auth import HTTPBasicAuth
 from copy import deepcopy
 from ast import literal_eval
 disable_warnings()
+warnings.filterwarnings("ignore")
 
 #put your Global Manager IP or FQDN
 hostname = "10.114.218.181"
@@ -26,9 +27,6 @@ domains = ["LM-Paris","LM-London"]
 
 #put the security objects you want to make Global. By default it covers groups and Dfw
 resource_types =["Domain","SecurityPolicy","Group","Rule"]
-
-
-warnings.filterwarnings("ignore")
 
 class NsxMgr:
     def __init__(self, hostname, username, password, mgr_type = "global", certificate_validation = False):
